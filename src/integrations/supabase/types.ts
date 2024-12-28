@@ -16,6 +16,7 @@ export type Database = {
           id: string
           industry: string
           target_audience: string
+          user_id: string | null
           website: string
         }
         Insert: {
@@ -24,6 +25,7 @@ export type Database = {
           id?: string
           industry: string
           target_audience: string
+          user_id?: string | null
           website: string
         }
         Update: {
@@ -32,6 +34,7 @@ export type Database = {
           id?: string
           industry?: string
           target_audience?: string
+          user_id?: string | null
           website?: string
         }
         Relationships: []
@@ -41,18 +44,21 @@ export type Database = {
           created_at: string
           id: string
           submission_id: string | null
+          user_id: string | null
           website: string
         }
         Insert: {
           created_at?: string
           id?: string
           submission_id?: string | null
+          user_id?: string | null
           website: string
         }
         Update: {
           created_at?: string
           id?: string
           submission_id?: string | null
+          user_id?: string | null
           website?: string
         }
         Relationships: [
@@ -64,6 +70,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          id: string
+          updated_at: string | null
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          id: string
+          updated_at?: string | null
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          id?: string
+          updated_at?: string | null
+          username?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {
