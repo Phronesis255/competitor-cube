@@ -9,7 +9,62 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      business_submissions: {
+        Row: {
+          business_name: string
+          created_at: string
+          id: string
+          industry: string
+          target_audience: string
+          website: string
+        }
+        Insert: {
+          business_name: string
+          created_at?: string
+          id?: string
+          industry: string
+          target_audience: string
+          website: string
+        }
+        Update: {
+          business_name?: string
+          created_at?: string
+          id?: string
+          industry?: string
+          target_audience?: string
+          website?: string
+        }
+        Relationships: []
+      }
+      competitor_entries: {
+        Row: {
+          created_at: string
+          id: string
+          submission_id: string | null
+          website: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          submission_id?: string | null
+          website: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          submission_id?: string | null
+          website?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "competitor_entries_submission_id_fkey"
+            columns: ["submission_id"]
+            isOneToOne: false
+            referencedRelation: "business_submissions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

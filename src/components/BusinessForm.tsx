@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface BusinessData {
   businessName: string;
@@ -47,14 +48,49 @@ const BusinessForm = () => {
     e.preventDefault();
     console.log("Submitting form data:", formData);
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      // First, insert the business submission
+      const { data: businessSubmission, error: businessError } = await supabase
+        .from('business_submissions')
+        .insert({
+          business_name: formData.businessName,
+          website: formData.website,
+          industry: formData.industry,
+          target_audience: formData.targetAudience
+        })
+        .select()
+        .single();
+
+      if (businessError) throw businessError;
+
+      // Then, insert competitor entries
+      const competitorPromises = formData.competitors
+        .filter(website => website.length > 0)
+        .map(website => 
+          supabase
+            .from('competitor_entries')
+            .insert({
+              submission_id: businessSubmission.id,
+              website
+            })
+        );
+
+      await Promise.all(competitorPromises);
+
       toast({
         title: "Analysis Complete",
-        description: "Redirecting to results...",
+        description: "Your data has been saved successfully!",
       });
+      
       navigate("/results", { state: { formData } });
-    }, 1500);
+    } catch (error) {
+      console.error('Error saving data:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save your data. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   const nextStep = () => setCurrentStep((prev) => prev + 1);
