@@ -78,11 +78,11 @@ const BusinessForm = () => {
       await Promise.all(competitorPromises);
 
       toast({
-        title: "Analysis Complete",
-        description: "Your data has been saved successfully!",
+        title: "Project Created",
+        description: "Your project has been created successfully!",
       });
       
-      navigate("/results", { state: { formData } });
+      navigate("/results", { state: { formData: businessSubmission } });
     } catch (error) {
       console.error('Error saving data:', error);
       toast({

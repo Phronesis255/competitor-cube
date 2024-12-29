@@ -95,6 +95,73 @@ export type Database = {
         }
         Relationships: []
       }
+      topic_keywords: {
+        Row: {
+          created_at: string
+          id: string
+          keyword: string
+          topic_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          keyword: string
+          topic_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          keyword?: string
+          topic_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "topic_keywords_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      topics: {
+        Row: {
+          competition_level: number
+          created_at: string
+          id: string
+          search_volume: number
+          submission_id: string | null
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          competition_level?: number
+          created_at?: string
+          id?: string
+          search_volume?: number
+          submission_id?: string | null
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          competition_level?: number
+          created_at?: string
+          id?: string
+          search_volume?: number
+          submission_id?: string | null
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "topics_submission_id_fkey"
+            columns: ["submission_id"]
+            isOneToOne: false
+            referencedRelation: "business_submissions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
